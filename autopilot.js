@@ -39,3 +39,53 @@ function fillUpGas(carObj) {
 function showGas(carObj) {
   console.log('Gas Level is:' + carObj.gas + " %.");
 };
+
+function driveCar(carObj, cityDistance) {
+  if (carObj.gas < cityDistance) {
+    fillUpGas(carObj);
+    return console.log('Needed Gas!');
+  }
+    carObj.city = getDestination(carObj);
+    carObj.gas -= cityDistance;
+    console.log("Drove to " + carObj.city + "   Remaining gas: " + carObj.gas);
+    return carObj.city;
+};
+
+function dropOffPassengers(carObj) {
+  var oldNum = carObj.passenger;
+  carObj.passenger -= 0;
+  console.log('Dropped off ' + oldNum + " passengers");
+  return oldNum;
+};
+
+function carAct(carObj) {
+  var distanceBetweenCities = 50;
+
+  if (carObj.gas < 20) {
+    fillUpGas(carObj);
+  } else if (carObj.passenger < 3) {
+    addPassengers(4, carObj);
+  } else {
+    if (carObj.gas < distanceBetweenCities) {
+      fillUpGas(carObj);
+    }
+  };
+  droveTo = driveCar(carObj, distanceBetweenCities);
+  passengers_dropped = dropOffPassengers(carObj);
+  return 'Drove to ' + droveTo + " dropped off " + passengers_dropped + " people.";
+};
+
+function commandFleet(carArray) {
+  for (var i = 0; i < carArray.length; i++ ) {
+    var action = carAct(carArray[i]);
+    console.log('Car' + (i + 1) + ": " + action);
+  };
+};
+
+function addOneCarPerDay(cars, numDays) {
+  for ( var i = numDays; i > 0; i-- ) {
+    var newCar = getNewCar('London', 0);
+    addCar(newCar);
+    commandFleet(cars);
+  }
+};
